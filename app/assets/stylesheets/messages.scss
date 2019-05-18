@@ -13,6 +13,27 @@ $side_group_name: 15px;
 $side_group_message: 11px;
 
 
+$prefixes: -webkit-, -moz-, -ms-, -o-, '';
+
+@mixin flexbox {
+  @each $prefix in $prefixes {
+    display: #{$prefix}flex;
+  }
+}
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    clear: both;
+    display: block;
+ }
+}
+
+.wrapper {
+  @include flexbox;
+}
+
+
 .notification {
   .notice {
     background-color: $light_blue;
@@ -41,8 +62,8 @@ $side_group_message: 11px;
         margin-top: 35px;
       }
       &__members {
-        color: #999;
-        display: flex;
+        @include flexbox;
+        color: $light_gray;
         font-size: 12px;
         margin-top: 15px;
         .member {
@@ -59,6 +80,10 @@ $side_group_message: 11px;
       line-height: 40px;
       margin-top: 28px;
       padding: 0 20px;
+      &__button {
+        color: $light_blue;
+        text-decoration: none;
+      }
     }
   }
 
@@ -67,17 +92,16 @@ $side_group_message: 11px;
     box-sizing: border-box;
     padding: 46px 40px 0;
     height: calc(100% - 100px - 90px);
-    overflow: scroll;
     .message {
       .upper-message {
         display: flex;
         &__user-name {
-          color: #434a54;
+          color: $black;
           font-size: 16px;
           font-weight: bold;
         }
         &__date {
-          color: #999;
+          color: $light_gray;
           font-size: 12px;
           padding-left: 10px;
         }
@@ -85,7 +109,7 @@ $side_group_message: 11px;
       .lower-message {
         margin-top: 10px;
         &__content {
-          color: #434a54;
+          color: $black;
           font-size: 14px;
           margin-bottom: 40px;
         }
@@ -165,14 +189,14 @@ $side_group_message: 11px;
       box-sizing: border-box;
       padding: 20px 0 40px;
       &__name {
+        color: $white;
         font-size: $side_group_name;
       }
       &__message {
+        color: $white;
         font-size: $side_group_message;
         margin-top: 5px;
       }
     }
   }
 }
-
-
