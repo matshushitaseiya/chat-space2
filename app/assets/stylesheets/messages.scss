@@ -30,6 +30,7 @@ $prefixes: -webkit-, -moz-, -ms-, -o-, '';
 }
 
 .wrapper {
+  position: absolute;
   @include flexbox;
 }
 
@@ -49,6 +50,8 @@ $prefixes: -webkit-, -moz-, -ms-, -o-, '';
 }
 
 .chat {
+  float: right;
+  position: relative;
   width: calc(100% - 300px);
   .header {
     box-sizing: border-box;
@@ -91,7 +94,8 @@ $prefixes: -webkit-, -moz-, -ms-, -o-, '';
     background-color: #FAFAFA;
     box-sizing: border-box;
     padding: 46px 40px 0;
-    height: calc(100% - 100px - 90px);
+    height: calc(100vh - 100px - 90px);
+    overflow: scroll;
     .message {
       .upper-message {
         display: flex;
