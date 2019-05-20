@@ -1,26 +1,25 @@
 $(function() {
   function buildHTML(message) {
-    var html = $('<li class="message">').append(message.content);
+    var html = $('<div class="message">').append(message.content);
     return html;
   }
 
-  $('.js-form').on('submit', function(e) {
+  $('#new_message').on('submit', function(e) {
     e.preventDefault();
-    var textField = $('.js-form__text-field');
-    var message = textField.val();
+    var formData = new FormData(this);
+    var url = $(this).attr('action')
     $.ajax({
-      type: 'POST',
-      url: '/messages.json',
-      data: {
-        todo: {
-          content: message
-        }
-      },
-      dataType: 'json'
+      url: url,
+      type: "POST",
+      data: formData,
+      dataType: 'json',
+      processData: false,
+      contentType: false
     })
     .done(function(data) {
       var html = buildHTML(data);
       $('.messages').append(html);
+      $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight},'fasts')
       textField.val('');
     })
     .fail(function() {
