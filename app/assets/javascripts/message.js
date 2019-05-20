@@ -1,35 +1,30 @@
 $(function() {
-
   function buildHTML(message) {
-    var name = $('<p class="chat__user">').append(message.name);
-    var
+    var html = $('<li class="message">').append(message.content);
+    return html;
   }
 
   $('.js-form').on('submit', function(e) {
     e.preventDefault();
     var textField = $('.js-form__text-field');
     var message = textField.val();
-
     $.ajax({
       type: 'POST',
-      url: '/groups/:group_id/messages.json',
+      url: '/messages.json',
       data: {
-        message: {
-          body: message,
-          image: message,
-          group_id: message,
-          user_id: message
+        todo: {
+          content: message
         }
       },
       dataType: 'json'
     })
     .done(function(data) {
-      var body = $('<p class="chat__content">').append(data.body);
-      $('.chat').append(body);
+      var html = buildHTML(data);
+      $('.messages').append(html);
       textField.val('');
     })
     .fail(function() {
-      alert('非同期通信に失敗しました');
+      alert('error');
     });
   });
 });
