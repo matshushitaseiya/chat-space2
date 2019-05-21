@@ -8,10 +8,11 @@
       .left-header__title
         = @group.name
       %ul.left-header__members
-        = "Member： "
-        %li.member
-          - @group.users.each do |user|
-            =  user.name
+        = "Member: "
+        %li.left-header__member
+        - @group.users.each do |user|
+          = user.name
+
     .right-header
       .right-header__button
         = link_to "Edit", "edit"
@@ -22,6 +23,6 @@
       = f.text_field :content, class: 'form__message', placeholder: 'type a message'
       .form__mask
         = f.label :image, class: 'form__mask__image' do
-          = fa_icon 'picture-o', class: 'icon'
+          = fa_icon 'image', class: 'icon'
           = f.file_field :image, class: 'hidden'
       = f.submit 'Send', class: 'form__submit'
