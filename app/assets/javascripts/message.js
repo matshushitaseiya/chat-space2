@@ -68,6 +68,7 @@ $(document).on('turbolinks:load', function(){
       else{
         clearInterval(interval);
       }
+      message_id = $('.message:last').data('messageId');
     }, 5000);
 
     function scroll() {
@@ -76,12 +77,12 @@ $(document).on('turbolinks:load', function(){
 
     $('#new_message').on('submit', function(e){
       e.preventDefault();
-      var message = new FormData(this);
-      var url = $(this).attr('action');
+      var formData = new FormData(this);
+      var url = (widow.location.href);
       $.ajax({
         url: url,
         type: 'POST',
-        data: message,
+        data: formData,
         dataType: 'json',
         processData: false,
         contentType: false
@@ -89,16 +90,20 @@ $(document).on('turbolinks:load', function(){
       .done(function(data){
         var html = buildHTML(data);
         $('.messages').append(html)
-        $("form")[0].reset();
-        $('#message_image').val('')
-        scroll()
+        $('#message_content').val('');
+        scrollBottom();
       })
       .fail(function(){
         alert('エラーが発生したためメッセージは送信できませんでした。');
       })
       .always(function(){
-        $('.form__submit').removeAttr("disabled");
+        $('.form__submit').prop('disabled', false);
       })
+      function scrollBottom(){
+        var target = $('.message').last();
+        var position = target.offset().top + $('.messages').scrollTop();
+        $('.messages').animate({ scrollTop: position}, 300, 'swing');
+      }
     })
   });
 })
