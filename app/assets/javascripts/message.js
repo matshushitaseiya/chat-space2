@@ -1,10 +1,10 @@
 $(document).on('turbolinks:load', function(){
   $(function(){
-    
+
     function buildHTML(message) {
       var image = message.image ? `<img src= ${ message.image }>` : "";
       var html = `<div class='message'>
-                    <div class='upper-message' data-message-id="${message.id}">
+                    <div class='upper-message' data_id="">
                       <div class='upper-message__user-name'>
                         ${message.name}
                       </div>
@@ -22,10 +22,10 @@ $(document).on('turbolinks:load', function(){
     return html;
     }
 
-    function buildHTML(message) {
+    function buildMessage(message) {
       var image = message.image ? `<img src= ${ message.image }>` : "";
-      var html = `<div class='message'>
-                    <div class='upper-message' data-message-id="${message.id}">
+      var html = `<div class='message' data-message-id="${message.id}">
+                    <div class='upper-message' data_id="">
                       <div class='upper-message__user-name'>
                         ${message.name}
                       </div>
@@ -42,7 +42,9 @@ $(document).on('turbolinks:load', function(){
                   </div>`
     return html;
     }
-
+    function scroll(){
+      $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight});
+    }
     var interval = setInterval(function(){
       var message_id = $('.message:last').data('messageId');
       if(window.location.href.match(/\/groups\/\d+\/messages/)){
@@ -55,12 +57,9 @@ $(document).on('turbolinks:load', function(){
         .done(function(json){
           var insertHTML = '';
           json.new_message.forEach(function(message){
-            if(message.id > id){
               insertHTML += buildMessage(message);
-            }
           });
           $('.messages').append(insertHTML);
-          scroll()
         })
         .fail(function(json){
           alert('自動更新に失敗しました');
@@ -90,7 +89,7 @@ $(document).on('turbolinks:load', function(){
       .done(function(data){
         var html = buildHTML(data);
         $('.messages').append(html)
-        $('.form__message').val('')
+        $("form")[0].reset();
         $('#message_image').val('')
         scroll()
       })
@@ -98,7 +97,7 @@ $(document).on('turbolinks:load', function(){
         alert('エラーが発生したためメッセージは送信できませんでした。');
       })
       .always(function(){
-        $('.form__submit').prop('disabled', false);
+        $('.form__submit').removeAttr("disabled");
       })
     })
   });
