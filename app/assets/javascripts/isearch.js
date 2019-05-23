@@ -1,9 +1,8 @@
 $(function() {
   $(document).on("click", ".user-search-add", function () {
-      var user_id = $(this).attr("data-user-id");
-      var user_name = $(this).attr("data-user-name");
+      var user_id = $(this).data("data-user-id");
+      var user_name = $(this).data("data-user-name");
       selectUserName(user_id, user_name);
-      $(this).parent().remove();
     })
     $(document).on("click", ".user-search-remove", function () {
       $(this).parent().remove();
@@ -35,7 +34,7 @@ function selectUserName(user_id, user_name) {
 
     $.ajax({
       type: 'GET',
-      url: '/groups/_form',
+      url: '/users',
       data: { keyword: input },
       dataType: 'json'
     })
@@ -45,6 +44,9 @@ function selectUserName(user_id, user_name) {
         users.forEach(function(user){
           appendUserName(user);
         });
+      }
+      else{
+        appendUserName("一致するメンバーがいません");
       }
     })
     .fail(function() {
