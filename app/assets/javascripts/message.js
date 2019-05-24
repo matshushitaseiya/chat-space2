@@ -23,28 +23,6 @@ $(document).on('turbolinks:load', function(){
     return html;
     }
 
-    function buildMessage(message) {
-      var content = message.content ? `${ message.content }` : "";
-      var image = message.image ? `<img src= ${ message.image }>` : "";
-      var html = `<div class='message' data-message-id="${message.id}">
-                    <div class='upper-message' data_id="">
-                      <div class='upper-message__user-name'>
-                        ${message.name}
-                      </div>
-                      <div class='upper-message__date'>
-                        ${message.created_at}
-                      </div>
-                      <div class='lower-message'>
-                        <p class="lower-message__content">
-                          ${content}
-                        </p>
-                        ${image}
-                      </div>
-                    </div>
-                  </div>`
-    return html;
-    }
-
     var interval = setInterval(function(){
       var message_id = $('.message:last').data('messageId');
       if(window.location.href.match(/\/groups\/\d+\/messages/)){
@@ -57,7 +35,7 @@ $(document).on('turbolinks:load', function(){
         .done(function(json){
           var insertHTML = '';
           json.new_message.forEach(function(message){
-              insertHTML += buildMessage(message);
+              insertHTML += buildHTML(message);
           });
           $('.messages').append(insertHTML);
           scroll()
