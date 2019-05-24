@@ -4,5 +4,10 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :edit, :update, :search]
   resources :groups, only: [:new, :create, :edit, :update] do
     resources :messages, only: [:index, :create]
+
+      get 'search'
+
+
+
   end
 end

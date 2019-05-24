@@ -8,6 +8,7 @@ class MessagesController < ApplicationController
       format.html
       format.json { @new_messages = @messages.where('id > ?', params[:id])}
 
+
     end
   end
 
@@ -35,4 +36,4 @@ class MessagesController < ApplicationController
   def set_group
     @group = Group.find(params[:group_id])
   end
- end
+end
