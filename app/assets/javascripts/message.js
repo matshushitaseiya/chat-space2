@@ -2,6 +2,7 @@ $(document).on('turbolinks:load', function(){
   $(function(){
 
     function buildHTML(message) {
+      var content = message.content ? `${ message.content }` : "";
       var image = message.image ? `<img src= ${ message.image }>` : "";
       var html = `<div class='message'>
                     <div class='upper-message' data_id="">
@@ -13,7 +14,7 @@ $(document).on('turbolinks:load', function(){
                       </div>
                       <div class='lower-message'>
                         <p class="lower-message__content">
-                          ${message.content}
+                          ${content}
                         </p>
                         ${image}
                       </div>
@@ -23,6 +24,7 @@ $(document).on('turbolinks:load', function(){
     }
 
     function buildMessage(message) {
+      var content = message.content ? `${ message.content }` : "";
       var image = message.image ? `<img src= ${ message.image }>` : "";
       var html = `<div class='message' data-message-id="${message.id}">
                     <div class='upper-message' data_id="">
@@ -34,7 +36,7 @@ $(document).on('turbolinks:load', function(){
                       </div>
                       <div class='lower-message'>
                         <p class="lower-message__content">
-                          ${message.content}
+                          ${content}
                         </p>
                         ${image}
                       </div>
@@ -42,9 +44,7 @@ $(document).on('turbolinks:load', function(){
                   </div>`
     return html;
     }
-    function scroll(){
-      $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight});
-    }
+
     var interval = setInterval(function(){
       var message_id = $('.message:last').data('messageId');
       if(window.location.href.match(/\/groups\/\d+\/messages/)){
@@ -60,6 +60,7 @@ $(document).on('turbolinks:load', function(){
               insertHTML += buildMessage(message);
           });
           $('.messages').append(insertHTML);
+          scroll()
         })
         .fail(function(json){
           alert('自動更新に失敗しました');
@@ -68,7 +69,6 @@ $(document).on('turbolinks:load', function(){
       else{
         clearInterval(interval);
       }
-      message_id = $('.message:last').data('messageId');
     }, 5000);
 
     function scroll() {
@@ -89,9 +89,9 @@ $(document).on('turbolinks:load', function(){
       })
       .done(function(data){
         var html = buildHTML(data);
-        $('.messages').append(html)
+        $('.messages').append(html);
+        $("form")[0].reset();
         $('#message_content').val('');
-        scrollBottom();
       })
       .fail(function(){
         alert('エラーが発生したためメッセージは送信できませんでした。');
@@ -99,11 +99,6 @@ $(document).on('turbolinks:load', function(){
       .always(function(){
         $('.form__submit').prop('disabled', false);
       })
-      function scrollBottom(){
-        var target = $('.message').last();
-        var position = target.offset().top + $('.messages').scrollTop();
-        $('.messages').animate({ scrollTop: position}, 300, 'swing');
-      }
     })
   });
 })
